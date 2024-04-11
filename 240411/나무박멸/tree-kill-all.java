@@ -30,8 +30,20 @@ public class Main {
         }
         for (int i = 0; i < M; i++) {
             growTree();
+//            for (int[] list : arr) {
+//                System.out.println(Arrays.toString(list));
+//            }
+//            System.out.println();
             spreadTree();
+//            for (int[] list : arr) {
+//                System.out.println(Arrays.toString(list));
+//            }
+//            System.out.println();
             spray();
+//            for (int[] list : arr) {
+//                System.out.println(Arrays.toString(list));
+//            }
+//            System.out.println("###");
         }
         System.out.println(res);
 
@@ -109,7 +121,7 @@ public class Main {
                     for (int j = 1; j <= K; j++) {
                         int nr = r + drLine[i]*j;
                         int nc = c + dcLine[i]*j;
-                        if (nr < 0 || nc < 0 || nr >= N || nc >= N || arr[nr][nc] <= 0) break;
+                        if (nr < 0 || nc < 0 || nr >= N || nc >= N || arr[nr][nc] <= 0 || arr[nr][nc]>9999) break;
                         if (arr[nr][nc] < 9999){
                             cnt += arr[nr][nc];
 //                            System.out.println(arr[nr][nc]+ " nr : "+nr+" nc : "+nc);
@@ -126,6 +138,7 @@ public class Main {
 
         res += max;
         // 제초제 뿌리기
+
         arr[rPosition][cPosition] = 10000 + C+1;
         for (int i = 0; i < 4; i++) {
             for (int j = 1; j <= K; j++) {
@@ -133,6 +146,10 @@ public class Main {
                 int nc = cPosition + dcLine[i]*j;
                 if (nr < 0 || nc < 0 || nr >= N || nc >= N || arr[nr][nc] < 0) break;
                     // 0보다 크면 계속 감
+                else if(arr[nr][nc]>9999){
+                    arr[nr][nc] = 10000+C+1;
+                    break;
+                }
                 else if (arr[nr][nc] > 0) {
                     arr[nr][nc] = 10000 + C+1;
                 }
@@ -152,8 +169,5 @@ public class Main {
                 }
             }
         }
-
     }
-
-
 }
