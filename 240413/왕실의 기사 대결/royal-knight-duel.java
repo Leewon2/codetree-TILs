@@ -54,6 +54,7 @@ public class Main {
             if (liveKnight[i]) continue;
             sum += initial[i] - knightPosition[i].health;
         }
+        System.out.println(sum);
 
 
     }
