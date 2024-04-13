@@ -54,7 +54,7 @@ public class Main {
             if (liveKnight[i]) continue;
             sum += initial[i] - knightPosition[i].health;
         }
-        System.out.println(sum);
+
 
     }
 
@@ -82,7 +82,7 @@ public class Main {
             }
             for (int r = nr; r <= nr + poll.height; r++) {
                 for (int c = nc; c <= nc + poll.length; c++) {
-                    if(r>=L || c>=L || arr[r][c]==2) {
+                    if (r >= L || c >= L || arr[r][c] == 2) {
                         return false;
                     }
                 }
@@ -96,18 +96,22 @@ public class Main {
                 outer:
                 for (int r = knight.x; r <= knight.x + knight.height; r++) {
                     for (int c = knight.y; c <= knight.y + knight.length; c++) {
-                        if (r >= nr && r <= nr + poll.height && c >= nc + poll.length && c <= nc + poll.length) {
-                            isPushed[i] = true;
-                            q.offer(knight);
-                            break outer;
-                        }
+                        for (int rr = nr; rr <= nr + poll.height; rr++) {
+                            for (int cc = nc; cc <= nc + poll.length; cc++) {
+                                if (r == rr && c == cc) {
+                                    isPushed[i] = true;
+                                    q.offer(knight);
+                                    break outer;
 
+                                }
+                            }
+                        }
                     }
+
                 }
             }
 
         }
-
         for (int i = 1; i <= N; i++) {
             // 밀려났다면, 사각형 안에 함정 갯수만큼 빼준다.
             if (isPushed[i]) {
@@ -119,7 +123,10 @@ public class Main {
                         }
                     }
                 }
-                if (knight.health < 1) liveKnight[i] = true;
+                if (knight.health < 1) {
+
+                    liveKnight[i] = true;
+                }
             }
         }
 
