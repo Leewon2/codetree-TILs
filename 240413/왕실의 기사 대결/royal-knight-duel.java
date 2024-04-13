@@ -77,7 +77,16 @@ public class Main {
             int nc = poll.y + dc[dir];
             // 기사의 위치를 먼저 변경시킨다.
             compare[poll.num] = new Node(nr, nc, poll.height, poll.length, poll.health, poll.num);
-            if (nr < 0 || nc < 0 || nr  + poll.height >= N|| nc +poll.length>= N  ) return false;
+            if (nr < 0 || nc < 0) {
+                return false;
+            }
+            for (int r = nr; r <= nr + poll.height; r++) {
+                for (int c = nc; c <= nc + poll.length; c++) {
+                    if(r>=L || c>=L || arr[r][c]==2) {
+                        return false;
+                    }
+                }
+            }
             // 범위를 벗어나거나 벽이면 return 한다.
             // 다음으로 배열을 순회하면서 확인해본다.
 
