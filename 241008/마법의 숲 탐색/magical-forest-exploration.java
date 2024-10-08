@@ -48,7 +48,7 @@ public class Main {
             // 끝났으면 자신의 출구 찾기
             // 출구를 기준으로 4방탐색 후 -1이하인 곳 있다면 그 곳의 중앙값과 현재 중앙값을 비교
             // 만약 row가 3 이하면 몸통 못나온거
-            if(row<3){
+            if(row<=3){
                 arr = new int[R+3][C];
             }else{
                 // 내 위치에서 가장 아래로 갈 수 있는 값을 가운데에 저장
@@ -91,7 +91,7 @@ public class Main {
     // 왼쪽으로 가면 -1
     private static boolean left(){
         if(ci-2<0 || arr[row][ci-2]!=0 || arr[row-1][ci-1]!=0 || arr[row+1][ci-1]!=0) return false;
-        if(arr[row+1][ci-2]!=0 || arr[row+2][ci-1] !=0) return false;
+        if(row+2>= R+3 || arr[row+1][ci-2]!=0 || arr[row+2][ci-1] !=0) return false;
         ci--;
         row++;
         di= (3+di)%4;
@@ -101,7 +101,7 @@ public class Main {
     // 오른쪽으로 가면 +1
     private static boolean right(){
         if(ci+2>=C || arr[row][ci+2]!=0 || arr[row-1][ci+1]!=0 || arr[row+1][ci+1]!=0) return false;
-        if(arr[row+1][ci+2]!=0 || arr[row+2][ci+1]!=0) return false;
+        if(row+2 >=R+3 ||arr[row+1][ci+2]!=0 || arr[row+2][ci+1]!=0) return false;
         ci++;
         row++;
         di= (di+1)%4;
