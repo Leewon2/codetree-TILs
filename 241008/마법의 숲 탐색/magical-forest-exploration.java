@@ -32,7 +32,11 @@ public class Main {
                     if(check){
                         if(!left()) check = false;
                     }else{
-                        if(!right()) break outer;
+                        if(!right()) {
+                            break outer;
+                        }else{
+                            check = true;
+                        }
                     }
                 }else{
                     check = true;
