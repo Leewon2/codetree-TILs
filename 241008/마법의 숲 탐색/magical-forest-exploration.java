@@ -87,7 +87,9 @@ public class Main {
     // 왼쪽으로 가면 -1
     private static boolean left(){
         if(ci-2<0 || arr[row][ci-2]!=0 || arr[row-1][ci-1]!=0 || arr[row+1][ci-1]!=0) return false;
+        if(arr[row+1][ci-2]!=0 || arr[row+2][ci-1] !=0) return false;
         ci--;
+        row++;
         di= (3+di)%4;
         return true;
     }
@@ -95,7 +97,9 @@ public class Main {
     // 오른쪽으로 가면 +1
     private static boolean right(){
         if(ci+2>=C || arr[row][ci+2]!=0 || arr[row-1][ci+1]!=0 || arr[row+1][ci+1]!=0) return false;
+        if(arr[row+1][ci+2]!=0 || arr[row+2][ci+1]!=0) return false;
         ci++;
+        row++;
         di= (di+1)%4;
         return true;
     }
