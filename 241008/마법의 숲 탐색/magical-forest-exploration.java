@@ -24,8 +24,6 @@ public class Main {
             di=sc.nextInt();
             row=1;
 
-            // 왼쪽으로 갈 수 있는가
-            boolean check = true;
             // 계속 이동
             outer : while(true){
                 boolean d = down();
@@ -38,22 +36,9 @@ public class Main {
                         }
                     }
                 }
-                // if(!down()){
-                //     if(check){
-                //         if(!left()) check = false;
-                //     }else{
-                //         if(!right()) {
-                //             break outer;
-                //         }else{
-                //             check = true;
-                //         }
-                //     }
-                // }else{
-                //     check = true;
+                // if(row==R+1){
+                //     break outer;
                 // }
-                if(row==R+1){
-                    break outer;
-                }
             }
             // 끝났으면 자신의 출구 찾기
             // 출구를 기준으로 4방탐색 후 -1이하인 곳 있다면 그 곳의 중앙값과 현재 중앙값을 비교
