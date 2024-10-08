@@ -28,19 +28,29 @@ public class Main {
             boolean check = true;
             // 계속 이동
             outer : while(true){
-                if(!down()){
-                    if(check){
-                        if(!left()) check = false;
-                    }else{
-                        if(!right()) {
+                boolean d = down();
+                if(!d){
+                    boolean l = left();
+                    if(!l){
+                        boolean r = right();
+                        if(!r){
                             break outer;
-                        }else{
-                            check = true;
                         }
                     }
-                }else{
-                    check = true;
                 }
+                // if(!down()){
+                //     if(check){
+                //         if(!left()) check = false;
+                //     }else{
+                //         if(!right()) {
+                //             break outer;
+                //         }else{
+                //             check = true;
+                //         }
+                //     }
+                // }else{
+                //     check = true;
+                // }
                 if(row==R+1){
                     break outer;
                 }
