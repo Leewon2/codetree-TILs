@@ -68,6 +68,7 @@ public class Main {
                 }
             }
         }
+        if(pq.isEmpty()) return new int[]{0,0};
         Node poll = pq.poll();
         re[0] = poll.r;
         re[1] = poll.c;
