@@ -12,7 +12,7 @@ public class Main {
         K = sc.nextInt();
         arr = new Node[N][M];
         for(int r=0; r<N; r++){
-            for(int c=0; c<N; c++){
+            for(int c=0; c<M; c++){
                 int force= sc.nextInt();
                 arr[r][c] = new Node(r,c,0,force);
             }
