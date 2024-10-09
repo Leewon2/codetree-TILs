@@ -76,7 +76,6 @@ public class Main {
                 }
             }
         }
-        if(pq.isEmpty()) return new int[]{-1,-1};
         Node poll = pq.poll();
         re[0] = poll.r;
         re[1] = poll.c;
@@ -99,7 +98,8 @@ public class Main {
                 arr[endR][endC] = new Node(e.r,e.c,e.attackIdx,e.force-damage);
                 visited[startR][startC] = true;
                 visited[endR][endC] = true;
-                for(int i=0; i<poll.list.size()-1; i++){
+                for(int i=0; i<poll.list.size(); i++){
+                    if(poll.list.get(i)[0]==endR && poll.list.get(i)[1]==endC) continue;
                     e = arr[poll.list.get(i)[0]][poll.list.get(i)[1]];
                     arr[e.r][e.c] = new Node(e.r,e.c,e.attackIdx,e.force-(damage/2));
                     visited[e.r][e.c]=true;
