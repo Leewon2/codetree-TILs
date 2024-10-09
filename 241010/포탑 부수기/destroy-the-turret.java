@@ -20,8 +20,10 @@ public class Main {
         for(int i=1; i<=K; i++){
             int[] start = attackCoord(0);
             Node node = arr[start[0]][start[1]];
-            arr[start[0]][start[1]] = new Node(node.r,node.c, i, node.force+N+M);
             int[] end = attackCoord(1);
+            // System.out.println("start : "+start[0]+" "+start[1]);
+            arr[start[0]][start[1]] = new Node(node.r,node.c, i, node.force+N+M);
+            // System.out.println("end : "+end[0]+" "+end[1]);
             boolean attack = laserAttack(start[0],start[1], end[0],end[1],arr[start[0]][start[1]].force);
             if(!attack) bombAttack(start[0],start[1], end[0],end[1],arr[start[0]][start[1]].force);
         }
@@ -61,7 +63,7 @@ public class Main {
         
         for(int r=0; r<N; r++){
             for(int c=0; c<M; c++){
-                if(arr[r][c].force!=0){
+                if(arr[r][c].force>0){
                     pq.offer(arr[r][c]);
                 }
             }
@@ -108,7 +110,7 @@ public class Main {
                 // 범위를 벗어나는 경우를 처리해준다.
                 int nr = (poll.r+dr[i]+N)%N;
                 int nc = (poll.c+dc[i]+M)%M;
-                if(arr[nr][nc].force<=0) continue;
+                if(arr[nr][nc].force<=0 || visited[nr][nc]) continue;
                 List<int[]> l = new ArrayList<>(poll.list);
                 l.add(new int[]{nr,nc});
                 q.offer(new laser(nr,nc,l));
