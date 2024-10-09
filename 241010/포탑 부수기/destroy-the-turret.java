@@ -21,13 +21,21 @@ public class Main {
             int[] start = attackCoord(0);
             Node node = arr[start[0]][start[1]];
             int[] end = attackCoord(1);
+            if(start[0]==end[0] && start[1]==end[1]) break;
             // System.out.println("start : "+start[0]+" "+start[1]);
             arr[start[0]][start[1]] = new Node(node.r,node.c, i, node.force+N+M);
+            
             // System.out.println("end : "+end[0]+" "+end[1]);
             boolean attack = laserAttack(start[0],start[1], end[0],end[1],arr[start[0]][start[1]].force);
             if(!attack) bombAttack(start[0],start[1], end[0],end[1],arr[start[0]][start[1]].force);
         }
         int[] res = attackCoord(1);
+        // for(int i=0; i<N; i++){
+        //     for(int j=0; j<M; j++){
+        //         System.out.print(arr[i][j].force+" ");
+        //     }
+        //     System.out.println();
+        // }
         System.out.println(Math.max(0,arr[res[0]][res[1]].force));
     }
 
@@ -68,7 +76,7 @@ public class Main {
                 }
             }
         }
-        if(pq.isEmpty()) return new int[]{0,0};
+        if(pq.isEmpty()) return new int[]{-1,-1};
         Node poll = pq.poll();
         re[0] = poll.r;
         re[1] = poll.c;
