@@ -63,12 +63,14 @@ public class Main {
                 while(!q.isEmpty()){
                     Node poll = q.poll();
                     visited[poll.r][poll.c]=true;
+                    // if(t==3) System.out.println("r : "+poll.r+ " " + poll.c);
                     for(int i=0; i<4; i++){
                         int nrr = poll.r + dr[i];
                         int ncc = poll.c + dc[i];
                         if(ncc<0 || nrr>=R+3 || ncc>=C) continue;
                         if(arr[nrr][ncc]<0){
                             max = Math.max(max,nrr);
+
                             for(int j=0; j<4; j++){
                                 int nnrr = nrr+dr[j];
                                 int nncc = ncc+dc[j];
@@ -79,6 +81,8 @@ public class Main {
                                         int nnnrr = nnrr+dr[k];
                                         int nnncc = nncc+dc[k];
                                         if(nnncc<0 || nnnrr>=R+3 || nnncc>=C) continue;
+                                        max = Math.max(max,nnnrr);
+
                                         if(arr[nnnrr][nnncc]==-2 && !visited[nnnrr][nnncc]){
                                             q.offer(new Node(nnnrr,nnncc));
                                         }
@@ -92,6 +96,7 @@ public class Main {
                 // System.out.println(max);
                 res+=(max-2);
                 // System.out.println("ci : "+ci+" row : "+row);
+                
             }
         }
         System.out.println(res);
