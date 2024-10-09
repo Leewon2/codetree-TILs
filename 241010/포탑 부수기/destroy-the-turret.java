@@ -14,7 +14,7 @@ public class Main {
         for(int r=0; r<N; r++){
             for(int c=0; c<M; c++){
                 int force= sc.nextInt();
-                arr[r][c] = new Node(r,c,0,force);
+                arr[r][c] = new Node(r,c,0,force,r+c);
             }
         }
         for(int i=1; i<=K; i++){
@@ -23,19 +23,13 @@ public class Main {
             int[] end = attackCoord(1);
             if(start[0]==end[0] && start[1]==end[1]) break;
             // System.out.println("start : "+start[0]+" "+start[1]);
-            arr[start[0]][start[1]] = new Node(node.r,node.c, i, node.force+N+M);
+            arr[start[0]][start[1]] = new Node(node.r,node.c, i, node.force+N+M,node.rPlusC);
             
             // System.out.println("end : "+end[0]+" "+end[1]);
             boolean attack = laserAttack(start[0],start[1], end[0],end[1],arr[start[0]][start[1]].force);
             if(!attack) bombAttack(start[0],start[1], end[0],end[1],arr[start[0]][start[1]].force);
         }
         int[] res = attackCoord(1);
-        // for(int i=0; i<N; i++){
-        //     for(int j=0; j<M; j++){
-        //         System.out.print(arr[i][j].force+" ");
-        //     }
-        //     System.out.println();
-        // }
         System.out.println(Math.max(0,arr[res[0]][res[1]].force));
     }
 
@@ -50,7 +44,7 @@ public class Main {
             // 가장 최근에 공격한 포탑
             else if(o1.attackIdx != o2.attackIdx) return o2.attackIdx-o1.attackIdx;
             // 행과 열의 합이 가장 큰 포탑
-            else if((o1.r+o1.c)!=(o2.r+o2.c)) return (o2.r+o2.c)-(o1.r+o1.c);
+            else if(o1.rPlusC!=o2.rPlusC) return o2.rPlusC-o1.rPlusC;
             // 열 값이 가장 큰 포탑
             else return o2.c-o1.c;
             });
@@ -63,7 +57,7 @@ public class Main {
             // 가장 오래전에 공격한 포탑
             else if(o1.attackIdx != o2.attackIdx) return o1.attackIdx-o2.attackIdx;
             // 행과 열의 합이 가장 작은 포탑
-            else if((o1.r+o1.c)!=(o2.r+o2.c)) return (o1.r+o1.c)-(o2.r+o2.c);
+            else if(o1.rPlusC!=o2.rPlusC) return o1.rPlusC-o2.rPlusC;
             // 열 값이 가장 작은 포탑
             else return o1.c-o2.c;
             });
@@ -95,20 +89,20 @@ public class Main {
             if(poll.r==endR && poll.c==endC){
                 visited = new boolean[N][M];
                 Node e = arr[endR][endC];
-                arr[endR][endC] = new Node(e.r,e.c,e.attackIdx,e.force-damage);
+                arr[endR][endC] = new Node(e.r,e.c,e.attackIdx,e.force-damage,e.rPlusC);
                 visited[startR][startC] = true;
                 visited[endR][endC] = true;
                 for(int i=0; i<poll.list.size(); i++){
                     if(poll.list.get(i)[0]==endR && poll.list.get(i)[1]==endC) continue;
                     e = arr[poll.list.get(i)[0]][poll.list.get(i)[1]];
-                    arr[e.r][e.c] = new Node(e.r,e.c,e.attackIdx,e.force-(damage/2));
+                    arr[e.r][e.c] = new Node(e.r,e.c,e.attackIdx,e.force-(damage/2),e.rPlusC);
                     visited[e.r][e.c]=true;
                 }
                 for(int j=0; j<N; j++){
                     for(int k=0; k<M; k++){
                         Node node = arr[j][k];
                         if(arr[j][k].force>0 && !visited[j][k]){
-                            arr[j][k] = new Node(node.r,node.c, node.attackIdx, node.force+1);
+                            arr[j][k] = new Node(node.r,node.c, node.attackIdx, node.force+1,node.rPlusC);
                         }
                     }
                 }
@@ -134,22 +128,23 @@ public class Main {
         visited[startR][startC] = true;
         visited[endR][endC] = true;
         Node e = arr[endR][endC];
-        arr[endR][endC] = new Node(e.r,e.c,e.attackIdx,e.force-damage);
+        arr[endR][endC] = new Node(e.r,e.c,e.attackIdx,e.force-damage,e.rPlusC);
         int[] drr = {1,0,-1,0,-1,-1,1,1};
         int[] dcc = {0,1,0,-1,-1,1,1,-1};
         for(int i=0; i<8; i++){
             int nr = (endR+drr[i]+N)%N;
             int nc = (endC+dcc[i]+M)%M;
             if(arr[nr][nc].force<=0) continue;
+            if(nr==startR && nc==startC) continue;
             e = arr[nr][nc];
-            arr[e.r][e.c] = new Node(e.r,e.c,e.attackIdx,e.force-(damage/2));
+            arr[e.r][e.c] = new Node(e.r,e.c,e.attackIdx,e.force-(damage/2),e.rPlusC);
             visited[e.r][e.c]=true;
         }
         for(int j=0; j<N; j++){
             for(int k=0; k<M; k++){
                 Node node = arr[j][k];
                 if(arr[j][k].force>0 && !visited[j][k]){
-                    arr[j][k] = new Node(node.r,node.c, node.attackIdx, node.force+1);
+                    arr[j][k] = new Node(node.r,node.c, node.attackIdx, node.force+1,node.rPlusC);
                 }
             }
         }
@@ -162,11 +157,13 @@ public class Main {
         int c;
         int attackIdx;
         int force;
-        public Node(int r, int c, int attackIdx, int force){
+        int rPlusC;
+        public Node(int r, int c, int attackIdx, int force, int rPlusC){
             this.r=r;
             this.c=c;
             this.attackIdx=attackIdx;
             this.force=force;
+            this.rPlusC=rPlusC;
         }
     }
     
