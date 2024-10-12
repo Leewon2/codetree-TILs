@@ -6,7 +6,6 @@ public class Main {
     static int[][] arr;
     static int[][] camp;
     static int[][] store;
-    static boolean[] useCmap;
     static boolean[] arriveStore;
     static int[] dr = {-1, 0, 0, 1};
     static int[] dc = {0, -1, 1, 0};
@@ -50,7 +49,6 @@ public class Main {
 
         // 캠프를 사용했는지 여부
         // 모든 이동이 끝난 후, 도착한 곳을 못가게 만든다.
-        useCmap = new boolean[campCnt];
         // 캠프 정보를 담을 배열
         camp = new int[campCnt][2];
         int idx = 0;
@@ -127,66 +125,34 @@ public class Main {
             }
 
         }
+        // 이동이 끝났고, 도착하면 도착지를 -1로 만들어주기
 
     }
 
     private static void goBaseCamp() {
         // time번째 사람을 베이스캠프로 이동시킨다.
-        int dist = Integer.MAX_VALUE;
-        int row = 0;
-        int col = 0;
         int rowLocation = store[time][0];
         int colLocation = store[time][1];
-        int idx = 0;
-        for (int i = 0; i < camp.length; i++) {
-            if (useCmap[i]) continue;
-            PriorityQueue<Node> subQ = new PriorityQueue<>((o1, o2) -> {
-                if (o1.cnt != o2.cnt) return o1.cnt - o2.cnt;
-                else if (o1.r != o2.r) return o1.r - o2.r;
-                return o1.c - o2.c;
-            });
-            subQ.offer(new Node(camp[i][0], camp[i][1], 0));
-            boolean[][] visited = new boolean[N][N];
-            outer:
-            while (!subQ.isEmpty()) {
-                Node p = subQ.poll();
-                visited[p.r][p.c] = true;
-                if(p.r == store[time][0] && p.c==store[time][1]){
-                    boolean check = false;
-                    if (p.cnt < dist) {
-                        check = true;
-                    } else if (p.cnt == dist) {
-                        // 거리가 같으면, 행이 작은 곳
-                        if (p.r < row) {
-                            check = true;
-                        }
-                        // 행도 같으면 열이 작은 곳
-                        else if (p.r == row) {
-                            if (p.c < col) {
-                                check = true;
-                            }
-                        }
-                    }
-                    if (check) {
-                        dist = p.cnt;
-                        row = camp[i][0];
-                        col = camp[i][1];
-                        idx = i;
-                        break outer;
-                    }
-                }
-                for (int j = 0; j < 4; j++) {
-                    int nr = p.r + dr[j];
-                    int nc = p.c + dc[j];
-                    // 배열의 범위를 벗어나거나 이동할 수 없는 곳은 -1로 변경
-                    if (nr < 0 || nc < 0 || nr >= N || nc >= N || visited[nr][nc] || arr[nr][nc] == -1) continue;
-                    subQ.offer(new Node(nr,nc,p.cnt+1));
-                }
+        Queue<Node> subQ = new LinkedList<>();
+        subQ.offer(new Node(rowLocation, colLocation));
+        boolean[][] visited = new boolean[N][N];
+        outer:
+        while (!subQ.isEmpty()) {
+            Node p = subQ.poll();
+            visited[p.r][p.c] = true;
+            if (arr[p.r][p.c] == 1){
+                people[time] = new Node(p.r, p.c);
+                arr[p.r][p.c]=-1;
+                break outer;
+            }
+            for (int j = 0; j < 4; j++) {
+                int nr = p.r + dr[j];
+                int nc = p.c + dc[j];
+                // 배열의 범위를 벗어나거나 이동할 수 없는 곳은 -1로 변경
+                if (nr < 0 || nc < 0 || nr >= N || nc >= N || visited[nr][nc] || arr[nr][nc] == -1) continue;
+                subQ.offer(new Node(nr, nc));
             }
         }
-        useCmap[idx] = true;
-        arr[camp[idx][0]][camp[idx][1]] = -1;
-        people[time] = new Node(row, col);
     }
 
     private static class Node {
