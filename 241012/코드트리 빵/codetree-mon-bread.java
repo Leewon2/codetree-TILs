@@ -67,10 +67,10 @@ public class Main {
             }
         }
 
-        while(!move()){
+        while(true){
             // time이 M보다 크거나 같으면 할 필요가 없다.
-            // boolean mo = move();
-            // if(mo) break;
+            boolean mo = move();
+            if(mo) break;
             if(time<M){
                 goBaseCamp();
             }
@@ -100,15 +100,16 @@ public class Main {
                         q[i].clear();
                     }else{
                         // nr과 nc를 합쳐서 String으로 변환하고, 길이가 2가 안되면 앞에 0을 붙여서 넣기
-                        String left = Integer.toString(nr);
-                        String right = Integer.toString(nc);
-                        if(left.length()<2) left = "0"+left;
-                        if(right.length()<2) right = "0"+right;
-                        String str = left+right;
-                        if(!set[i].contains(str)){
-                            subQ.offer(new Node(nr,nc));
-                            set[i].add(str);
-                        }
+                        // String left = Integer.toString(nr);
+                        // String right = Integer.toString(nc);
+                        // if(left.length()<2) left = "0"+left;
+                        // if(right.length()<2) right = "0"+right;
+                        // String str = left+right;
+                        // if(!set[i].contains(str)){
+                        //     subQ.offer(new Node(nr,nc));
+                        //     set[i].add(str);
+                        // }
+                        subQ.offer(new Node(nr,nc));
                     }
                 }
             }
